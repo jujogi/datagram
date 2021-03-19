@@ -41,6 +41,7 @@ passport.deserializeUser(function(obj, done) {
 const authFacebook =  passport.authenticate('facebook');
 const authFacebookCallback = passport.authenticate('facebook',
     {
+        successRedirect: "/home",
         failureRedirect: "/login"
     });
 

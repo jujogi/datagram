@@ -1,4 +1,5 @@
 import express from "express";
+import expressSession from "express-session";
 import bodyParser from "body-parser";
 import helmet from "helmet"
 import cors from "cors";
@@ -16,12 +17,20 @@ app.use(helmet());
 app.use(cors());
 
 app.use(passport.initialize());
-app.use(passport.session());
+app.use(expressSession({
+    resave: false,
+    saveUninitialized: true,
+    secret: 'datagram',
+    cookie: {
+        secure: false,
+    }
+}));
 
 app.use("/auth", authRouter);
 
 app.get("/home", (req, res) => {    
-    console.log(req);
+    const { user } = req.session.passport;
+    res.status(200).send(user);
 });
 
 app.listen(PORT, () => {
