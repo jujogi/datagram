@@ -1,8 +1,9 @@
 import { Router } from "express";
-import { fanpageDetails } from "../controllers/fanpage.controller";
+import { getFanpageDetails, getFanpagePosts } from "../controllers/fanpage.controller";
 
 const router = Router();
 
-router.get("/fanpage", fanpageDetails);
+router.get("/fanpage", getFanpageDetails);
+router.get("/fanpage/posts", getFanpagePosts);
 
 export default router;

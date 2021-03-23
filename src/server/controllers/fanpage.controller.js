@@ -1,14 +1,9 @@
-import axios from "axios";
+import { GRAPH_URL, requestData } from "../util/index"
+import { getPostDetails } from "./post.controller"
 
-const GRAPH_URL = "https://graph.facebook.com/v10.0";
 const FANPAGE = "5tarutacali"
 
-const requestData = async (options) => {
-    const { data } = await axios(options);
-    return data;
-};
-
-const fanpageDetails = async (req, res) => {
+const getFanpageDetails = async (req, res) => {
     const { accessToken } = req.session;
     const options = {
         url: `${GRAPH_URL}/${FANPAGE}`,
@@ -22,10 +17,37 @@ const fanpageDetails = async (req, res) => {
         const fanpage = await requestData(options);
         res.status(200).send(fanpage);
     } catch(error) {
-        fanpageDetails();
+        getFanpageDetails();
+    };
+};
+
+const getFanpagePosts = async (req, res) => {
+    //TODO: Dinamyc fanpage ID
+    const { accessToken } = req.session;
+    const options = {
+        url: `${GRAPH_URL}/${FANPAGE}/posts`,
+        method: "get",
+        params: {
+            "access_token": accessToken,
+        },
+    };
+    try {
+        const { data: posts } = await requestData(options);
+        const postWithMetrics = [];
+
+        for (const post of posts) {
+            console.log("loading info...");
+            const postMetrics = await getPostDetails(post.id, accessToken);
+            postWithMetrics.push(postMetrics);
+        }
+        res.status(200).send(postWithMetrics);
+
+    } catch(error) {
+        getFanpagePosts();
     };
 };
 
 export {
-    fanpageDetails
+    getFanpageDetails,
+    getFanpagePosts
 }
