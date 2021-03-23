@@ -5,7 +5,7 @@ import helmet from "helmet"
 import cors from "cors";
 import passport from "passport";
 import authRouter from "./routes/auth.routes"
-
+import scrapRouter from "./routes/scrap.routes"
 
 const PORT = 3000;
 
@@ -19,7 +19,7 @@ app.use(cors());
 app.use(passport.initialize());
 app.use(expressSession({
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     secret: 'datagram',
     cookie: {
         secure: false,
@@ -27,10 +27,16 @@ app.use(expressSession({
 }));
 
 app.use("/auth", authRouter);
+app.use("/api", scrapRouter);
 
 app.get("/home", (req, res) => {    
-    const { user } = req.session.passport;
-    res.status(200).send(user);
+    if(req.session.passport.user){
+        const { accessToken } = req.session.passport.user;
+        req.session.accessToken = accessToken;
+        req.session.save();
+    }
+    const { accessToken } = req.session;
+    res.status(200).send(accessToken);
 });
 
 app.listen(PORT, () => {
