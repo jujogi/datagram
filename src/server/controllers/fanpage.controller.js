@@ -1,4 +1,5 @@
 import { GRAPH_URL, requestData } from "../util/index"
+import postMapper from "../util/post.mapper";
 import { getPostDetails } from "./post.controller"
 
 const FANPAGE = "5tarutacali"
@@ -29,6 +30,7 @@ const getFanpagePosts = async (req, res) => {
         method: "get",
         params: {
             "access_token": accessToken,
+            "limit": 5,
         },
     };
     try {
@@ -37,8 +39,13 @@ const getFanpagePosts = async (req, res) => {
 
         for (const post of posts) {
             console.log("loading info...");
-            const postMetrics = await getPostDetails(post.id, accessToken);
-            postWithMetrics.push(postMetrics);
+            try {
+                const postMetrics = await getPostDetails(post.id, accessToken);
+                const newPost = await postMapper(postMetrics);
+                postWithMetrics.push(newPost);
+            } catch(e){
+                console.log(e)
+            }
         }
         res.status(200).send(postWithMetrics);
 

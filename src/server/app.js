@@ -18,7 +18,7 @@ app.use(cors());
 
 app.use(passport.initialize());
 app.use(expressSession({
-    resave: false,
+    resave: true,
     saveUninitialized: false,
     secret: 'datagram',
     cookie: {
@@ -30,13 +30,18 @@ app.use("/auth", authRouter);
 app.use("/api", scrapRouter);
 
 app.get("/home", (req, res) => {    
-    if(req.session.passport.user){
-        const { accessToken } = req.session.passport.user;
+
+    const { passport = { user: {} } } = req.session;
+
+    if(passport.user && passport.user.accessToken){
+        const accessToken = passport.user.accessToken;
         req.session.accessToken = accessToken;
         req.session.save();
+        res.cookie("graph_access_token", accessToken);
+        res.status(200).send(accessToken);
+    } else {
+        res.status(500).send("Sorry, your accessToken is not available");
     }
-    const { accessToken } = req.session;
-    res.status(200).send(accessToken);
 });
 
 app.listen(PORT, () => {
