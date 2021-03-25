@@ -19,6 +19,20 @@ const getPostDetails = async (postId, accessToken) => {
     };
 };
 
+const getPostInfo = async (req, res) => {
+    const { postId = "659332810744982_854870371191224" } = req.query;
+    const { accessToken } = req.session;
+
+    try {
+        const post = await getPostDetails(postId, accessToken);
+        res.status(200).send(post);
+    } catch(e) {
+        res.status(500).send(e.message);
+    };
+
+};
+
 export {
+    getPostInfo,
     getPostDetails
 }
