@@ -30,10 +30,9 @@ app.use("/auth", authRouter);
 app.use("/api", scrapRouter);
 
 app.get("/home", (req, res) => {    
-
     const { passport = { user: {} } } = req.session;
 
-    if(passport.user && passport.user.accessToken){
+    if (passport.user && passport.user.accessToken) {
         const accessToken = passport.user.accessToken;
         req.session.accessToken = accessToken;
         req.session.save();

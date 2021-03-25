@@ -1,4 +1,5 @@
 import { GRAPH_URL, requestData } from "../util/index";
+import postMapper from "../util/post.mapper";
 
 const getPostDetails = async (postId, accessToken) => {
     const options = {
@@ -10,7 +11,9 @@ const getPostDetails = async (postId, accessToken) => {
         },
     };
     try {
-        return await requestData(options);
+        const details =  await requestData(options);
+        return postMapper(details);
+        
     } catch(error) {
         getPostDetails();
     };
