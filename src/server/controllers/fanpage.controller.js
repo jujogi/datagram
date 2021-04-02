@@ -1,35 +1,35 @@
-import { GRAPH_URL, requestData } from "../util/index"
-import { getPostDetails } from "./post.controller"
+import { GRAPH_URL, requestData } from "../util/index";
+import { getPostDetails } from "./post.controller";
 
 const getFanpageDetails = async (req, res) => {
     const { accessToken } = req.session;
-    const { fanpageId = "5tarutacali" } = req.query;
+    const { fanpageId } = req.params;
     const options = {
         url: `${GRAPH_URL}/${fanpageId}`,
         method: "get",
         params: {
-            "access_token": accessToken,
+            access_token: accessToken,
             fields: "name,about,country_page_likes"
-        },
+        }
     };
     try {
         const fanpage = await requestData(options);
         res.status(200).send(fanpage);
-    } catch(e) {
-        res.status(500).send(e.message);
-    };
+    } catch (e) {
+        res.send(e);
+    }
 };
 
 const getFanpagePosts = async (req, res) => {
     const { accessToken } = req.session;
-    const { fanpageId = "5tarutacali" } = req.query;
+    const { fanpageId } = req.params;
     const options = {
         url: `${GRAPH_URL}/${fanpageId}/posts`,
         method: "get",
         params: {
-            "access_token": accessToken,
-            "limit": 5,
-        },
+            access_token: accessToken,
+            limit: 5
+        }
     };
 
     try {
@@ -41,18 +41,14 @@ const getFanpagePosts = async (req, res) => {
             try {
                 const postDetails = await getPostDetails(post.id, accessToken);
                 allPosts.push(postDetails);
-            } catch(e) {
+            } catch (e) {
                 res.status(200).send(e.message);
             }
         }
         res.status(200).send(allPosts);
-
-    } catch(e) {
-        res.status(500).send(e.message);
-    };
+    } catch (e) {
+        res.status(500).send(e);
+    }
 };
 
-export {
-    getFanpageDetails,
-    getFanpagePosts
-}
+export { getFanpageDetails, getFanpagePosts };

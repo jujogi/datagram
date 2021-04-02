@@ -9,5 +9,4 @@ router.get("/fanpage/:fanpageId/posts", getFanpagePosts);
 
 router.get("/post/:postId", getPostInfo);
 
-
 export default router;
