@@ -1,5 +1,6 @@
 # datagram
 Facebook API Graph - Recollect Social Media Feed
+User need to have are privileges on the page that he wants to analyze.
 
 > yarn install
 
