@@ -1,11 +1,11 @@
-const postMapper = async (post = {}) => {
+const postMapper = (post = {}) => {
     const {
         id,
         full_picture: picture,
         permalink_url: url,
         message = "Not message provided",
         created_time: creadtedAt = "yyyy/mm/dd",
-        shares = { count: 0 },
+        shares = { count: 0 }
     } = post;
 
     return {
@@ -21,9 +21,9 @@ const postMapper = async (post = {}) => {
             wow: post.wow.summary.total_count || 0,
             sad: post.sad.summary.total_count || 0,
             angry: post.angry.summary.total_count || 0,
-            shares: shares.count,
+            shares: shares.count
         }
-    }
+    };
 };
 
 export default postMapper;

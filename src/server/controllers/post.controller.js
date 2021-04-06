@@ -6,17 +6,17 @@ const getPostDetails = async (postId, accessToken) => {
         url: `${GRAPH_URL}/${postId}`,
         method: "get",
         params: {
-            "access_token": accessToken,
-            fields: "id,created_time,message,shares,permalink_url,full_picture,reactions.type(LIKE).limit(0).summary(1).as(like),reactions.type(LOVE).limit(0).summary(1).as(love),reactions.type(HAHA).limit(0).summary(1).as(haha),reactions.type(WOW).limit(0).summary(1).as(wow),reactions.type(SAD).limit(0).summary(1).as(sad),reactions.type(ANGRY).limit(0).summary(1).as(angry)"
-        },
+            access_token: accessToken,
+            fields:
+                "id,created_time,message,shares,permalink_url,full_picture,reactions.type(LIKE).limit(0).summary(1).as(like),reactions.type(LOVE).limit(0).summary(1).as(love),reactions.type(HAHA).limit(0).summary(1).as(haha),reactions.type(WOW).limit(0).summary(1).as(wow),reactions.type(SAD).limit(0).summary(1).as(sad),reactions.type(ANGRY).limit(0).summary(1).as(angry)"
+        }
     };
     try {
-        const details =  await requestData(options);
+        const details = await requestData(options);
         return postMapper(details);
-        
-    } catch(error) {
+    } catch (error) {
         getPostDetails();
-    };
+    }
 };
 
 const getPostInfo = async (req, res) => {
@@ -26,13 +26,9 @@ const getPostInfo = async (req, res) => {
     try {
         const post = await getPostDetails(postId, accessToken);
         res.status(200).send(post);
-    } catch(e) {
+    } catch (e) {
         res.status(500).send(e.message);
-    };
-
+    }
 };
 
-export {
-    getPostInfo,
-    getPostDetails
-}
+export { getPostInfo, getPostDetails };

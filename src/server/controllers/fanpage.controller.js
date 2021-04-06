@@ -1,4 +1,5 @@
 import { GRAPH_URL, requestData } from "../util/index";
+import generatePosts from "../util/generators";
 import { getPostDetails } from "./post.controller";
 
 const getFanpageDetails = async (req, res) => {
@@ -51,4 +52,9 @@ const getFanpagePosts = async (req, res) => {
     }
 };
 
-export { getFanpageDetails, getFanpagePosts };
+const mockPosts = async (req, res) => {
+    const posts = generatePosts(10);
+    res.status(200).send(posts);
+};
+
+export { getFanpageDetails, getFanpagePosts, mockPosts };
