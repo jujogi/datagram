@@ -11,6 +11,7 @@ Facebook API Graph - Recollect Social Media Feed
 
 > GET http://localhost:3000/api/fanpage/5tarutacali
 > GET http://localhost:3000/api/fanpage/5tarutacali/posts
+> GET http://localhost:3000/api/fanpage/5tarutacali/fake-posts
 > GET http://localhost:3000/api/post/659332810744982_854870371191224
 
 ## CLIENT
